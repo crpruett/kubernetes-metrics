@@ -1,2 +1,0 @@
-# DevOps Study App Frontend
-
