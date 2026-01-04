@@ -1,0 +1,29 @@
+CTYPE html>
+<html>
+<head>
+  <title>Kubernetes Cluster Status</title>
+  <style>
+    body { font-family: sans-serif; margin: 40px; }
+    .card { padding: 20px; border: 1px solid #ccc; width: 300px; }
+  </style>
+</head>
+<body>
+  <h1>Cluster Status</h1>
+  <div class="card" id="status">Loading...</div>
+
+  <script>
+    fetch("/")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("status").innerHTML = `
+          Nodes: ${data.cluster.nodes}<br>
+          Pods: ${data.cluster.pods}<br>
+          Namespaces: ${data.cluster.namespaces}<br>
+          Updated: ${data.timestamp}
+        `;
+      });
+  </script>
+</body>
+</html>
+
+

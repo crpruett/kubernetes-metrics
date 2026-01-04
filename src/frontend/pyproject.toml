@@ -1,0 +1,32 @@
+[project]
+name = "study-tracker-frontend"
+version = "0.1.0"
+description = "Frontend for DevOps Study Tracker application"
+readme = "README.md"
+authors = [{ name = "crpruett", email = "crpruett@iu.edu" }]
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.123.4",
+    "flask>=3.1.2",
+    "httpx>=0.28.1",
+    "requests>=2.32.5",
+    "uvicorn>=0.38.0",
+]
+
+[project.scripts]
+study-tracker-frontend = "frontend.main:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/frontend"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+    "responses>=0.25.8",
+    "ruff>=0.14.10",
+]

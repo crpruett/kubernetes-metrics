@@ -1,0 +1,39 @@
+[tools]
+flux2 = "latest"
+github-cli = "latest"
+k3d = "latest"
+k9s = "latest"
+kubectl = "latest"
+pre-commit = "latest"
+python = "3.13"
+ruff = "latest"
+trivy = "0.61.1"
+uv = "latest"
+
+[settings]
+python.uv_venv_auto = true
+idiomatic_version_file_enable_tools = ["python"]
+experimental = true
+
+[env]
+APP_REPO = 'devops-study-app'
+GITOPS_REPO = 'devops-study-app-gitops'
+
+[hooks]
+enter = "bash ./scripts/setup_project"
+
+[tasks.k8s-setup-local] #everying after . is a variable name
+description = "Set up basic Kuberenetes cluser for development that builds the local images and applies them with K3D"
+run = "bash ./kubernetes/setup_cluser_local.sh"
+
+[tasks.e2e-test]
+description = "Run end-to-end tesing on Kube cluster with python"
+run = "cd./kubernetes && uv run e2e-test.py"
+
+[tasks.setup-key]
+description = "Set up deploy keys for repo."
+run = "bash ./scripts/setup_deploy_key.sh"
+
+[tasks.k8s-gitops-setup]
+description = "Setup gitops for K8s deployment"
+run = "bash ./kubernetes/setup_cluster_gitops.sh"
