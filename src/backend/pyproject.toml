@@ -7,10 +7,18 @@ authors = [
     { name = "crpruett", email = "crpruett@iu.edu" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "fastapi>=0.128.0",
+    "httpx>=0.28.1",
+    "kubernetes>=34.1.0",
+    "uvicorn>=0.40.0",
+]
 
 [project.scripts]
 gin-metrics-api = "backend:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["/src/backend"]
 
 [build-system]
 requires = ["hatchling"]
