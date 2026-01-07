@@ -24,8 +24,35 @@ except ConfigException:
         core_v1 = None
         mode = "mock"
 
+# Local Metrics
+
+metrics_api = client.CustomObjectsApi()
+
+
+@app.get("/node-usage")
+def node_usage():
+    node_metrics = metrics_api.list_cluster_custom_object(
+        group="metrics.k8s.io",
+        version="v1beta1",
+        plural="nodes",
+    )
+
+    items = []
+    for n in node_metrics.get("items", []):
+        items.append(
+            {
+                "node": n["metadata"]["name"],
+                "cpu": n["usage"]["cpu"],
+                "memory": n["usage"]["memory"],
+            }
+        )
+
+    return {"items": items}
+
 
 # ---- API: metrics ----
+
+
 @app.get("/")
 def metrics():
     # Always return something
@@ -36,6 +63,7 @@ def metrics():
                 "nodes": 0,
                 "pods": 0,
                 "namespaces": 0,
+                "services": 0,
             },
             "timestamp": datetime.utcnow().isoformat() + "Z",
         }
@@ -44,6 +72,7 @@ def metrics():
         nodes = core_v1.list_node().items
         pods = core_v1.list_pod_for_all_namespaces().items
         namespaces = core_v1.list_namespace().items
+        services = core_v1.list_service_for_all_namespaces().items
 
         return {
             "mode": mode,
@@ -51,6 +80,7 @@ def metrics():
                 "nodes": len(nodes),
                 "pods": len(pods),
                 "namespaces": len(namespaces),
+                "services": len(services),
             },
             "timestamp": datetime.utcnow().isoformat() + "Z",
         }
@@ -78,159 +108,162 @@ def ui():
     return """
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Cat DevOps Dashboard</title>
-    <style>
-      :root{
-        --bg:#0b0f14; --card:#111826; --muted:#92a4b8; --fg:#e8eef6;
-        --border:#1f2a3a; --ok:#30d158; --warn:#ffd60a; --bad:#ff453a;
-        --accent:#5aa7ff;
-        --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-        --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      }
-      body{ margin:0; background:var(--bg); color:var(--fg); font-family:var(--sans); }
-      header{ padding:28px 28px 10px; border-bottom:1px solid var(--border); }
-      h1{ margin:0; font-size:20px; letter-spacing:.4px; }
-      .sub{ margin-top:6px; color:var(--muted); font-size:13px; }
-      main{ padding:22px 28px 40px; max-width:1100px; }
-      .grid{ display:grid; grid-template-columns:repeat(12, 1fr); gap:14px; }
-      .card{
-        grid-column: span 4;
-        background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
-        border:1px solid var(--border);
-        border-radius:12px;
-        padding:16px;
-        min-height:96px;
-      }
-      .card.wide{ grid-column: span 12; }
-      .label{ color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.9px; }
-      .value{ margin-top:10px; font-size:30px; font-weight:600; }
-      .row{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
-      .pill{
-        font-family:var(--mono);
-        font-size:12px;
-        color:var(--muted);
-        border:1px solid var(--border);
-        padding:6px 10px;
-        border-radius:999px;
-        white-space:nowrap;
-      }
-      .status{ display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:12px; }
-      .dot{ width:9px; height:9px; border-radius:50%; background:var(--warn); box-shadow:0 0 0 3px rgba(255,214,10,.10); }
-      .dot.ok{ background:var(--ok); box-shadow:0 0 0 3px rgba(48,209,88,.10); }
-      .dot.bad{ background:var(--bad); box-shadow:0 0 0 3px rgba(255,69,58,.10); }
-      pre{ margin:0; font-family:var(--mono); font-size:12px; color:var(--muted); overflow:auto; }
-      a{ color:var(--accent); text-decoration:none; }
-      a:hover{ text-decoration:underline; }
-      @media (max-width: 900px){
-        .card{ grid-column: span 12; }
-      }
-      .footer{ margin-top:18px; color:var(--muted); font-size:12px; }
-      .error{ color:var(--bad); font-family:var(--mono); font-size:12px; }
-    </style>
-  </head>
-  <body>
-    <header>
-      <div class="row">
-        <div>
-          <h1>Cat DevOps Dashboard</h1>
-          <div class="sub">Kubernetes metrics + operational status</div>
-        </div>
-        <div class="pill" id="apiTarget">API: (not set)</div>
-      </div>
-    </header>
+<head>
+  <meta charset="utf-8" />
+  <title>Kubernetes Metrics</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <main>
-      <div class="grid">
-        <div class="card">
-          <div class="row">
-            <div class="label">Nodes</div>
-            <div class="status"><span class="dot" id="dotNodes"></span><span id="mode">mode</span></div>
-          </div>
-          <div class="value" id="nodes">—</div>
-        </div>
+  <style>
+    body {
+      margin: 0;
+      padding: 32px;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: #0f172a;
+      color: #e5e7eb;
+    }
 
-        <div class="card">
-          <div class="label">Pods</div>
-          <div class="value" id="pods">—</div>
-        </div>
+    h1 {
+      margin-bottom: 4px;
+      font-size: 22px;
+    }
 
-        <div class="card">
-          <div class="label">Namespaces</div>
-          <div class="value" id="namespaces">—</div>
-        </div>
+    .subtitle {
+      color: #9ca3af;
+      font-size: 13px;
+      margin-bottom: 24px;
+    }
 
-        <div class="card wide">
-          <div class="row">
-            <div class="label">Raw payload</div>
-            <div class="pill" id="updated">Updated: —</div>
-          </div>
-          <div style="margin-top:12px;">
-            <div id="err" class="error" style="display:none;"></div>
-            <pre id="raw">{}</pre>
-          </div>
-          <div class="footer">
-            Tip: set <span class="pill">API_BASE</span> to point at the backend (e.g., <span class="pill">/api</span> behind a reverse proxy).
-          </div>
-        </div>
-      </div>
-    </main>
+    .panel {
+      background: #111827;
+      border: 1px solid #1f2933;
+      border-radius: 8px;
+      padding: 16px;
+      max-width: 520px;
+    }
 
-    <script>
-      // In production you typically inject this at build/deploy time.
-      // For now, default to same-origin "/".
-      const API_BASE = (window.API_BASE || "").trim();      // can be set by a small config script
-      const METRICS_URL = (API_BASE ? API_BASE.replace(/\/$/, "") : "") + "/";
+    .row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #1f2933;
+    }
 
-      document.getElementById("apiTarget").textContent = "API: " + (API_BASE || "(same origin)");
+    .row:last-child {
+      border-bottom: none;
+    }
 
-      function setDot(ok, bad){
-        const dot = document.getElementById("dotNodes");
-        dot.classList.remove("ok","bad");
-        if (bad) dot.classList.add("bad");
-        else if (ok) dot.classList.add("ok");
-      }
+    .label {
+      color: #9ca3af;
+    }
 
-      async function load() {
-        const err = document.getElementById("err");
-        try {
-          const res = await fetch(METRICS_URL, { cache: "no-store" });
-          const data = await res.json();
+    .value {
+      font-weight: 600;
+    }
 
-          document.getElementById("raw").textContent = JSON.stringify(data, null, 2);
+    .status {
+      margin-top: 16px;
+      font-size: 13px;
+      color: #9ca3af;
+    }
 
-          if (!res.ok || !data || !data.cluster) {
-            err.style.display = "block";
-            err.textContent = "Backend returned an error or unexpected payload.";
-            setDot(false, true);
-            return;
-          }
+    pre {
+      margin-top: 24px;
+      background: #020617;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      overflow-x: auto;
+    }
 
-          err.style.display = "none";
-          document.getElementById("mode").textContent = data.mode || "unknown";
-          document.getElementById("nodes").textContent = data.cluster.nodes;
-          document.getElementById("pods").textContent = data.cluster.pods;
-          document.getElementById("namespaces").textContent = data.cluster.namespaces;
-          document.getElementById("updated").textContent = "Updated: " + (data.timestamp || "—");
+    .error {
+      color: #f87171;
+      margin-top: 16px;
+      font-size: 13px;
+    }
+  </style>
+</head>
 
-          // Simple health coloring
-          const ok = (data.mode === "kubernetes" || data.mode === "local");
-          setDot(ok, !ok);
+<body>
 
-        } catch (e) {
-          err.style.display = "block";
-          err.textContent = "Request failed: " + e;
-          setDot(false, true);
+  <h1>Gin DevOps </h1>
+  <h2> Kubernetes Metrics</h2>
+  <div class="subtitle">Live data from cluster API</div>
+
+  <div class="panel">
+    <div class="row">
+      <span class="label">Mode</span>
+      <span class="value" id="mode">—</span>
+    </div>
+    <div class="row">
+      <span class="label">Nodes</span>
+      <span class="value" id="nodes">—</span>
+    </div>
+    <div class="row">
+      <span class="label">Pods</span>
+      <span class="value" id="pods">—</span>
+    </div>
+    <div class="row">
+      <span class="label">Namespaces</span>
+      <span class="value" id="namespaces">—</span>
+    </div>
+    <div class="row">
+        <span class="label">Services</span>
+        <span class="value" id="allservices">-</span>
+    </div>
+    </div>
+  </div>
+  <div class="status" id="updated">Last update: —</div>
+  <div class="error" id="error" style="display:none;"></div>
+
+  <pre id="raw">{}</pre>
+<h3>Node Resource Usage (Raw)</h3>
+<pre id="nodeUsage">loading…</pre>
+
+  <script>
+    const API_URL = "/";   // later becomes "/api"
+
+    async function loadMetrics() {
+      const errorEl = document.getElementById("error");
+
+      try {
+        const res = await fetch(API_URL, { cache: "no-store" });
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
         }
-      }
 
-      load();
-      setInterval(load, 5000);
-    </script>
-  </body>
+        const data = await res.json();
+
+        if (!data || !data.cluster) {
+          throw new Error("Unexpected API response");
+        }
+		
+
+        document.getElementById("mode").textContent = data.mode;
+        document.getElementById("nodes").textContent = data.cluster.nodes;
+        document.getElementById("pods").textContent = data.cluster.pods;
+        document.getElementById("namespaces").textContent = data.cluster.namespaces;
+        document.getElementById("allservices").textContent = data.cluster.services;
+        document.getElementById("updated").textContent =
+          "Last update: " + (data.timestamp || "unknown");
+
+        document.getElementById("raw").textContent =
+          JSON.stringify(data, null, 2);
+
+        errorEl.style.display = "none";
+
+      } catch (err) {
+        errorEl.style.display = "block";
+        errorEl.textContent = "Error fetching metrics: " + err.message;
+      }
+    }
+
+    loadMetrics();
+    setInterval(loadMetrics, 5000);
+  </script>
+
+</body>
 </html>
+
 """
 
 
