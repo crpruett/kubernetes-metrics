@@ -45,4 +45,4 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:latest
     outputs:
       tag: ${{ steps.tag.outputs.TAG }}
-      app: backend
+      app: kubernetes-metrics
