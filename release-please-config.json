@@ -2,7 +2,7 @@
   "packages": {
     "src/backend": {
       "release-type": "python",
-      "package-name": "DEVOPS_Kube_Metrics"
+      "package-name": "DEVOPS_Kube_Metrics",
       "component": "backend",
       "include-component-in-tag": true,
       "changelog-path": "CHANGELOG.md",
