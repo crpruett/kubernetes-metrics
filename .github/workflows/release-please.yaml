@@ -14,6 +14,6 @@ jobs:
         with:
           # Will not trigger other workflows when using GITHUB_TOKEN
           # token: ${{ secrets.GITHUB_TOKEN }}
-          token: "${{ secrets.DEVOPS_STUDY_APP }}"
+          token: "${{ secrets.DEVOPS_Kube_Metrics }}"
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
