@@ -5,7 +5,6 @@ on:
   push:
     tags:
       - "backend*"
-      - "frontend*"
 env:
   REGISTRY: ghcr.io
   BACKEND_IMAGE_NAME: ${{ github.repository_owner }}/Devops_Kube_Metrics
