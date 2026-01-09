@@ -2,7 +2,7 @@
   "packages": {
     "src/backend": {
       "release-type": "python",
-      "package-name": "study-tracker-backend",
+      "package-name": "DEVOPS_Kube_Metrics"
       "component": "backend",
       "include-component-in-tag": true,
       "changelog-path": "CHANGELOG.md",
@@ -10,7 +10,7 @@
         {
           "type": "toml",
           "path": "uv.lock",
-          "jsonpath": "$.package[?(@.name.value=='study-tracker-backend')].version"
+          "jsonpath": "$.package[?(@.name.value=='DEVOPS_Kube_Metrics')].version"
         }
       ]
     }
