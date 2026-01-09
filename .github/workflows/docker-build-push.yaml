@@ -1,0 +1,101 @@
+# .github/workflows/docker-build-push.yaml
+name: Build and Push Docker Images
+
+on:
+  push:
+    tags:
+      - "backend*"
+      - "frontend*"
+env:
+  REGISTRY: ghcr.io
+  BACKEND_IMAGE_NAME: ${{ github.repository_owner }}/study-app-api
+  FRONTEND_IMAGE_NAME: ${{ github.repository_owner }}/study-app-web
+
+jobs:
+  build-and-push-backend:
+    name: Build and Push Backend
+    runs-on: ubuntu-latest
+    # Only run for backend tags
+    if: contains(github.ref, 'backend')
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract tag name
+        id: tag
+        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Build and push Backend Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src/backend
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ steps.tag.outputs.TAG }}
+            ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:latest
+    outputs:
+      tag: ${{ steps.tag.outputs.TAG }}
+      app: backend
+
+  build-and-push-frontend:
+    name: Build and Push Frontend
+    runs-on: ubuntu-latest
+    # Only run for frontend tags
+    if: contains(github.ref, 'frontend')
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract tag name
+        id: tag
+        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Build and push frontend Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src/frontend
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ steps.tag.outputs.TAG }}
+            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
+    outputs:
+      tag: ${{ steps.tag.outputs.TAG }}
+      app: frontend
+
+  trigger_gitops:
+    name: Trigger GitOps
+    needs: [build-and-push-backend, build-and-push-frontend]
+    # Run if either build job succeeded (the other one will be skipped based on the tag)
+    if: always() && (needs.build-and-push-backend.result == 'success' || needs.build-and-push-frontend.result == 'success')
+    uses: ./.github/workflows/update-gitops.yaml
+    with:
+      tag: ${{ needs.build-and-push-backend.outputs.tags || needs.build-and-push-frontend.outputs.tags }}
+      app: ${{ needs.build-and-push-backend.outputs.app || needs.build-and-push-frontend.outputs.app }}
+
+    secrets:
+      GITOPS_DEPLOY_KEY: ${{ secrets.GITOPS_DEPLOY_KEY }}
+      DEVOPS_STUDY_APP: ${{ secrets.DEVOPS_STUDY_APP }}
