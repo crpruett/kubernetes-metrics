@@ -7,7 +7,7 @@ on:
       - "backend*"
 env:
   REGISTRY: ghcr.io
-  BACKEND_IMAGE_NAME: ${{ github.repository_owner }}/Devops_Kube_Metrics
+  BACKEND_IMAGE_NAME: ${{ github.repository_owner }}/kubernetes-metrics
 
 jobs:
   build-and-push-backend:
