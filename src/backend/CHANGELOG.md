@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/crpruett/kubernetes-metrics/compare/backend-v0.3.0...backend-v0.4.0) (2026-01-13)
+
+
+### Features
+
+* **more-building:** fun stuff ([6f704ed](https://github.com/crpruett/kubernetes-metrics/commit/6f704edfa20655722c869ff4fd515fb2599c8016))
+
 ## [0.3.0](https://github.com/crpruett/kubernetes-metrics/compare/backend-v0.2.0...backend-v0.3.0) (2026-01-13)
 
 
