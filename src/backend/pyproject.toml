@@ -13,10 +13,10 @@ dependencies = [
 ]
 
 [project.scripts]
-gin-metrics-api = "backend:main"
+kubernetes-metrics = "backend.main:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["/src/backend"]
+packages = ["src/backend"]
 
 [build-system]
 requires = ["hatchling"]

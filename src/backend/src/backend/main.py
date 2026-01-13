@@ -4,6 +4,9 @@ from kubernetes import client, config
 from kubernetes.config import ConfigException
 from kubernetes.client.exceptions import ApiException
 from datetime import datetime
+import uvicorn
+
+from .config import APP_HOST, APP_PORT
 
 app = FastAPI(title="Kubernetes Metrics Dashboard")
 
@@ -708,3 +711,12 @@ def ui():
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+
+def main():
+    "Entry Point for running the app with UV"
+    uvicorn.run("backend.main:app", host=APP_HOST, port=APP_PORT, reload=True)
+
+
+if __name__ == "__main__":
+    main()

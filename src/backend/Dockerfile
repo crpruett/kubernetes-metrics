@@ -31,8 +31,8 @@ COPY --from=builder --chown=app:app /app/.venv /app/.venv
 USER app
 
 # Expose the correct port, though this is already done in our code
-EXPOSE 22111 
+EXPOSE 22112 
 
 #Run the application
-CMD ["/app/.venv/bin/study-tracker-frontend"]
+CMD ["/app/.venv/bin/kubernetes-metrics"]
 
