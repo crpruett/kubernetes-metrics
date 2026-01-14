@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.0](https://github.com/crpruett/kubernetes-metrics/compare/backend-v0.4.0...backend-v0.5.0) (2026-01-14)
+
+
+### Features
+
+* **updating-lock:** lock ([0576085](https://github.com/crpruett/kubernetes-metrics/commit/05760853fd02982a31290a857c65986b1d2b99a2))
+* **updating-uv.lock:** updating for validation check ([6dae8b0](https://github.com/crpruett/kubernetes-metrics/commit/6dae8b08d9599e2772b259bd8ff739fc5693664a))
+
 ## [0.4.0](https://github.com/crpruett/kubernetes-metrics/compare/backend-v0.3.0...backend-v0.4.0) (2026-01-13)
 
 
