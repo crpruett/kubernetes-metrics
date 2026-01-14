@@ -11,7 +11,7 @@ env:
 
 jobs:
   build-and-push-backend:
-    name: Build and Push Backend
+    name: Build and Push
     runs-on: ubuntu-latest
     # Only run for backend tags
     if: contains(github.ref, 'backend')
