@@ -707,7 +707,7 @@ def ui():
 """
 
 
-# Do it Trigger release please
+# Do ilt Trigger release please
 
 
 # ---- Health check ----
