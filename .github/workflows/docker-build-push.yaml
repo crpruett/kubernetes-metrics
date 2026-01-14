@@ -4,14 +4,14 @@ name: Build and Push Docker Images
 on:
   push:
     tags:
-      - "backend*"
+      - "v*"
 env:
   REGISTRY: ghcr.io
   BACKEND_IMAGE_NAME: ${{ github.repository_owner }}/kubernetes-metrics
 
 jobs:
   build-and-push-backend:
-    name: Build and Push Backend
+    name: Build and Push
     runs-on: ubuntu-latest
     # Only run for backend tags
     if: contains(github.ref, 'backend')
