@@ -1,5 +1,36 @@
 # Changelog
 
+## 0.1.0 (2026-01-18)
+
+
+### Features
+
+* **boom:** boom ([96dcdcd](https://github.com/crpruett/kubernetes-metrics/commit/96dcdcd6618be7eee775e9cd88f591c7be63acaa))
+* **boom:** boom ([f9c4709](https://github.com/crpruett/kubernetes-metrics/commit/f9c4709885fa75f333bfe12b481751c28bd83f4f))
+* **boop:** booop bop ([ab14089](https://github.com/crpruett/kubernetes-metrics/commit/ab14089c5277b13b239df6d4fc38904179ad5831))
+* **build:** build full ([304fd3d](https://github.com/crpruett/kubernetes-metrics/commit/304fd3db6a87f0f0b5ab49f6da6a8be18a736530))
+* **build:** build full ([fe0f58c](https://github.com/crpruett/kubernetes-metrics/commit/fe0f58c9e1b54e87c283149a8410a1573217f336))
+* **build:** final build ([7bedd8d](https://github.com/crpruett/kubernetes-metrics/commit/7bedd8d7d2c6df62ca666ad1ee7d69c4b0141339))
+* **final-prototype-build:** prototype ([15e9b3d](https://github.com/crpruett/kubernetes-metrics/commit/15e9b3deb404f11af2c726ea8d81a382278e0f44))
+* **fixing-buld-and-push-job:** fix it ([e3fbc37](https://github.com/crpruett/kubernetes-metrics/commit/e3fbc370b1c7ea3f6c5552371995a37c8e12d2a0))
+* **initial-prototype-build:** building image for initial release ([013af04](https://github.com/crpruett/kubernetes-metrics/commit/013af0440b9970522c5c185d80dacb766a39b48b))
+* **more-building:** fun stuff ([6f704ed](https://github.com/crpruett/kubernetes-metrics/commit/6f704edfa20655722c869ff4fd515fb2599c8016))
+* **more:** more ([a787d88](https://github.com/crpruett/kubernetes-metrics/commit/a787d88b5ab1bb177257e10ad6aebf0a2e816ec4))
+* **multiple-locks:** unlock ([a1163c4](https://github.com/crpruett/kubernetes-metrics/commit/a1163c41d449eba6d0bad5a7768201687578d192))
+* **please:** please work ([d45c135](https://github.com/crpruett/kubernetes-metrics/commit/d45c135b3bd75297650e02b69ed2aaa3697dd181))
+* **pushing-product:** pushing commit for image creation ([1116fcd](https://github.com/crpruett/kubernetes-metrics/commit/1116fcd76ca8f508e335ddaf4e52144e8d339467))
+* **tryin-again:** again ([a5ed5d1](https://github.com/crpruett/kubernetes-metrics/commit/a5ed5d1611f8bd0c12afa9cc40327a105fb7868a))
+* **unlocking:** unlock ([db4e000](https://github.com/crpruett/kubernetes-metrics/commit/db4e000fe1db647a5cf886bdf0b9adfb575675b4))
+* **updating-lock:** lock ([0576085](https://github.com/crpruett/kubernetes-metrics/commit/05760853fd02982a31290a857c65986b1d2b99a2))
+* **updating-uv-lock:** update ([42241c2](https://github.com/crpruett/kubernetes-metrics/commit/42241c24fdbf2d8b90e37ab2240fd8ba36f99ba2))
+* **updating-uv.lock:** updating for validation check ([6dae8b0](https://github.com/crpruett/kubernetes-metrics/commit/6dae8b08d9599e2772b259bd8ff739fc5693664a))
+* **uv-really-does-suck:** uv sucks ([a17c107](https://github.com/crpruett/kubernetes-metrics/commit/a17c1073917013be5fb933b67a4bb2c5131835f8))
+
+
+### Bug Fixes
+
+* **app-conversion:** switched to cluster metrics ([583e976](https://github.com/crpruett/kubernetes-metrics/commit/583e976a5831e999bb704c6c99eedb5ac77e7592))
+
 ## [0.2.0](https://github.com/crpruett/kubernetes-metrics/compare/kubernetes-metrics-v0.1.0...kubernetes-metrics-v0.2.0) (2026-01-18)
 
 
