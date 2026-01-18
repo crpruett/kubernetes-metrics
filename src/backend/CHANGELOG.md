@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/crpruett/kubernetes-metrics/compare/kubernetes-metrics-v0.4.0...kubernetes-metrics-v0.5.0) (2026-01-18)
+
+
+### Features
+
+* **uv-really-does-suck:** uv sucks ([a17c107](https://github.com/crpruett/kubernetes-metrics/commit/a17c1073917013be5fb933b67a4bb2c5131835f8))
+
 ## [0.4.0](https://github.com/crpruett/kubernetes-metrics/compare/kubernetes-metrics-v0.3.0...kubernetes-metrics-v0.4.0) (2026-01-18)
 
 
