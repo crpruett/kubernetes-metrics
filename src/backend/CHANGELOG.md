@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/crpruett/kubernetes-metrics/compare/kubernetes-metrics-v0.5.0...kubernetes-metrics-v0.6.0) (2026-01-18)
+
+
+### Features
+
+* **updating-uv-lock:** update ([42241c2](https://github.com/crpruett/kubernetes-metrics/commit/42241c24fdbf2d8b90e37ab2240fd8ba36f99ba2))
+
 ## [0.5.0](https://github.com/crpruett/kubernetes-metrics/compare/kubernetes-metrics-v0.4.0...kubernetes-metrics-v0.5.0) (2026-01-18)
 
 
