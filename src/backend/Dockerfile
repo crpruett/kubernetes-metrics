@@ -4,12 +4,14 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /app
 
-# Install dependencies in a cache layer with bind mounts
+# Copy dependency files first
+COPY uv.lock pyproject.toml ./
+
+# Install dependencies with cache
 RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=uv.lock,target=uv.lock \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --no-install-project --no-editable
 
+# Copy the entire project
 COPY . /app
 
 # Sync the project with cache
