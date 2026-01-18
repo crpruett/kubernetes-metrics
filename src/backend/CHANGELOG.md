@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/crpruett/kubernetes-metrics/compare/kubernetes-metrics-v0.1.0...kubernetes-metrics-v0.2.0) (2026-01-18)
+
+
+### Features
+
+* **fixing-buld-and-push-job:** fix it ([e3fbc37](https://github.com/crpruett/kubernetes-metrics/commit/e3fbc370b1c7ea3f6c5552371995a37c8e12d2a0))
+
 ## 0.1.0 (2026-01-18)
 
 
