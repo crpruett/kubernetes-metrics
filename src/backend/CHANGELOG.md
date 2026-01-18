@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/crpruett/kubernetes-metrics/compare/kubernetes-metrics-v0.1.0...kubernetes-metrics-v0.2.0) (2026-01-18)
+
+
+### Features
+
+* **build:** final build ([7bedd8d](https://github.com/crpruett/kubernetes-metrics/commit/7bedd8d7d2c6df62ca666ad1ee7d69c4b0141339))
+
 ## 0.1.0 (2026-01-18)
 
 
