@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/crpruett/kubernetes-metrics/compare/kubernetes-metrics-v0.7.0...kubernetes-metrics-v0.8.0) (2026-01-18)
+
+
+### Features
+
+* **multiple-locks:** unlock ([a1163c4](https://github.com/crpruett/kubernetes-metrics/commit/a1163c41d449eba6d0bad5a7768201687578d192))
+
 ## [0.7.0](https://github.com/crpruett/kubernetes-metrics/compare/kubernetes-metrics-v0.6.0...kubernetes-metrics-v0.7.0) (2026-01-18)
 
 
