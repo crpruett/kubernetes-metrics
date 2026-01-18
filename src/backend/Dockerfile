@@ -4,13 +4,17 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /app
 
-COPY uv.lock pyproject.toml ./
-
-RUN uv sync --no-install-project --no-editable
+# Install dependencies in a cache layer with bind mounts
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --no-install-project --no-editable
 
 COPY . /app
 
-RUN uv sync --no-editable --no-dev
+# Sync the project with cache
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --no-editable --no-dev
 
 FROM python:3.13-alpine
 
@@ -23,4 +27,3 @@ USER app
 EXPOSE 22112
 
 CMD ["/app/.venv/bin/kubernetes-metrics"]
-#boop
