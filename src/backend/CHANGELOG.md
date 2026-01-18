@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/crpruett/kubernetes-metrics/compare/kubernetes-metrics-v0.3.0...kubernetes-metrics-v0.4.0) (2026-01-18)
+
+
+### Features
+
+* **boop:** booop bop ([ab14089](https://github.com/crpruett/kubernetes-metrics/commit/ab14089c5277b13b239df6d4fc38904179ad5831))
+
 ## [0.3.0](https://github.com/crpruett/kubernetes-metrics/compare/kubernetes-metrics-v0.2.0...kubernetes-metrics-v0.3.0) (2026-01-18)
 
 
