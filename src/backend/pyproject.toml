@@ -1,6 +1,6 @@
 [project]
 name = "kubernetes-metrics"
-version = "0.2.0"
+version = "0.3.0"
 description = "Kubernetes Metrcis Board"
 readme = "README.md"
 authors = [{ name = "crpruett", email = "crpruett@iu.edu" }]
