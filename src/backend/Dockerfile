@@ -10,7 +10,7 @@ RUN uv sync --locked --no-install-project --no-editable
 
 COPY . /app
 
-RUN uv sync --locked --no-editable --no-dev || (echo "Uv sync sucks" && uv --version && la -la && cat pyproject.toml && exit 1)
+RUN uv sync --no-editable --no-dev
 
 FROM python:3.13-alpine
 
