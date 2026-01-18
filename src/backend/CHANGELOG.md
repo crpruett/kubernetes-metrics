@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/crpruett/kubernetes-metrics/compare/kubernetes-metrics-v0.6.0...kubernetes-metrics-v0.7.0) (2026-01-18)
+
+
+### Features
+
+* **unlocking:** unlock ([db4e000](https://github.com/crpruett/kubernetes-metrics/commit/db4e000fe1db647a5cf886bdf0b9adfb575675b4))
+
 ## [0.6.0](https://github.com/crpruett/kubernetes-metrics/compare/kubernetes-metrics-v0.5.0...kubernetes-metrics-v0.6.0) (2026-01-18)
 
 
