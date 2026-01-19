@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: k8s-metrics
+  namespace: k-metrics
 spec:
   replicas: 1
   selector:
