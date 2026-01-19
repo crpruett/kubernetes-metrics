@@ -14,7 +14,7 @@ spec:
     spec:
       serviceAccountName: k8s-metrics-reader
       containers:
-        - name: backend
+        - name: kubernetes-metrics
           image: ghcr.io/crpruett/kubernetes-metrics:kubernetes-metrics-v0.1.0
           imagePullPolicy: IfNotPresent
           ports:
